@@ -11,6 +11,11 @@ describe User do
   it { should respond_to(:auth_token) }
 
   it { should be_valid }
+  it { should validate_presence_of(:email) }
+
+  it { should validate_confirmation_of(:password) }
+  it { should allow_value('example@domain.com').for(:email) }
+
   it { should validate_uniqueness_of(:auth_token)}
 
   describe "#generate_authentication_token!" do
