@@ -42,4 +42,24 @@ describe Order do
       expect{@order.set_total!}.to change{@order.total}.from(0).to(185)
     end
   end
+
+  describe "#valid?" do
+    before do
+      product_1 = FactoryGirl.create :product, price: 100, quantity: 5
+      product_2 = FactoryGirl.create :product, price: 85, quantity: 10
+
+
+      placement_1 = FactoryGirl.build :placement, product: product_1, quantity: 3
+      placement_2 = FactoryGirl.build :placement, product: product_2, quantity: 15
+
+      @order = FactoryGirl.build :order
+
+      @order.placements << placement_1
+      @order.placements << placement_2
+    end
+
+    it "becomes invalid due to insufficient products" do
+      expect(@order).to_not be_valid
+    end
+  end
 end
